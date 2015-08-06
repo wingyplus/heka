@@ -87,9 +87,13 @@ func NewBufferSet(queueDir, queueName string, config *QueueBufferConfig,
 		config.CursorUpdateCount = 1
 	}
 
+	if config.MaxFileSize == 0 {
+		config.MaxFileSize = 128 * 1024 * 1024
+	}
+
 	if config.MaxFileSize < uint64(message.MAX_RECORD_SIZE) {
-		err := fmt.Errorf("`max_file_size` must be greater than maximum record size of %d",
-			message.MAX_RECORD_SIZE)
+		err := fmt.Errorf("`max_file_size` (%d) must be greater than maximum record size of %d",
+			config.MaxFileSize, message.MAX_RECORD_SIZE)
 		return nil, nil, err
 	}
 
@@ -118,9 +122,6 @@ type BufferFeeder struct {
 func NewBufferFeeder(queue string, config *QueueBufferConfig, queueSize *BufferSize) (
 	*BufferFeeder, error) {
 
-	if config.MaxFileSize == 0 {
-		config.MaxFileSize = 128 * 1024 * 1024
-	}
 	bf := &BufferFeeder{
 		queue:     queue,
 		queueSize: queueSize,

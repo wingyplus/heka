@@ -25,6 +25,9 @@ Bug Handling
 * Fixed ProcessInput not getting process's full output when NullSplitter is in
   use (#1645).
 
+* Moved initialization of queue buffer MaxFileSize default value to prevent
+  failing config validation of default ElasticSearchOutput config.
+
 0.10.0b0 (2015-07-13)
 =====================
 
